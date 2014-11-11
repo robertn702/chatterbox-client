@@ -8,6 +8,7 @@
   };
 
   app.send = function (message) {
+    console.log("started sending");
     $.ajax({
       // always use this url
       url: app.server,
@@ -29,11 +30,10 @@
       // always use this url
       url: app.server,
       type: 'GET',
-      // data: JSON.stringify(message),
+      data: 'order=-createdAt;limit=30',
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Received message');
-        console.log(data);
         displayMessages(data);
       },
       error: function (data) {
@@ -61,12 +61,8 @@
   }
 
   var displayMessages = function(data) {
-    // console.log(data.results.length);
+    console.log("data",data);
     for (var i = 0; i < data.results.length; i++) {
-      /*if (data.results[i].username && (data.results[i].text || data.results[i].message)) {
-        var userText = data.results[i].text || data.results[i].message;
-        var message = escapeHtml(data.results[i].username) + ": " + escapeHtml(userText);
-        $('#chats').append('<p>' + message + '</p>');*/
       app.addMessage(data.results[i]);
       //}
     }
@@ -100,10 +96,41 @@
   };
   //<option value="volvo">Volvo</option>
 
-  app.fetch();
+  $(document).ready(function(){
+   app.fetch();
 
-  $(".getMessageButton").click(function(){
+   $(".getMessageButton").click(function(){
     app.fetch();
+   });
+
+     $(".sendMessageButton").click(function(){
+      var message = {
+        username: "defaultname",
+        text: $('input').val(),
+        roomname: "defaultroom"
+      };
+      console.log("mess", message);
+    app.send(message);
+   });
+
+  // var newT = $("select").val();
+    $('select').change(function(){
+      filterRooms($("select").val());
+    });
+
+    var filterRooms = function(roomName) {
+      $('#chats').children().each(function() {
+        if (!$(this).hasClass(roomName)) {
+          $(this).hide();
+        } else {
+          $(this).show();
+        }
+      });
+    };
   });
+
+
+
+
 
 // });
