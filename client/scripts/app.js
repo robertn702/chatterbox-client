@@ -63,7 +63,7 @@
   var displayMessages = function(data) {
     console.log("data",data);
     for (var i = 0; i < data.results.length; i++) {
-      app.addMessage(data.results[i]);
+      app.addMessage(data.results[data.results.length-1-i]);
       //}
     }
   };
@@ -76,13 +76,14 @@
     var escapedRoom;
     if (messageObj.username && (messageObj.text || messageObj.message)) {
         var userText = messageObj.text || messageObj.message;
-        var message = escapeHtml(messageObj.username) + ": " + escapeHtml(userText);
+        var user = '<a href=#>'+ escapeHtml(messageObj.username) + '</a>';
+        var message =  escapeHtml(userText);
         if (messageObj.roomname !== undefined) {
           escapedRoom=escapeHtml(messageObj.roomname);
           app.addRoom(escapedRoom);
-          $('#chats').append('<p class=' + escapedRoom +'>' + message + '</p>');
+          $('#chats').prepend('<p class=' + escapedRoom +'>'+user+': ' + message + '</p>');
         } else {
-          $('#chats').append('<p>' + message + '</p>');
+          $('#chats').prepend('<p class=' + escapedRoom +'>'+user+': '+message + '</p>');
         }
         // console.log("Are we there?");
       }
