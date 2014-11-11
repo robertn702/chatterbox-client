@@ -81,11 +81,10 @@
     if (messageObj.username && (messageObj.text || messageObj.message)) {
         var userText = messageObj.text || messageObj.message;
         var message = escapeHtml(messageObj.username) + ": " + escapeHtml(userText);
-        if (messageObj.roomname !==undefined) {
+        if (messageObj.roomname !== undefined) {
           escapedRoom=escapeHtml(messageObj.roomname);
           app.addRoom(escapedRoom);
-          var idName = "#"+escapedRoom
-          $(idName).append('<p>' + message + '</p>');
+          $('#chats').append('<p class=' + escapedRoom +'>' + message + '</p>');
         } else {
           $('#chats').append('<p>' + message + '</p>');
         }
@@ -94,18 +93,9 @@
   };
 
   app.addRoom = function(roomName) {
-    console.log("fir",$('#roomSelect').length);
-    if ($('div.roomSelect').length === 0) {
-      console.log("syntax for existance")
-      $('#chats').append('<div class="roomSelect"></div>');
-    }
-   // console.log("sec", $('#roomSelect').children().length);
-    var idName = "#"+roomName;
-    if ($(idName).length>0) {  //the room is already in Selectroom
-      console.log("check loop")
+    if ($('#roomSelect').has('option:contains('+roomName+')').length) {  //the room is already in Selectroom
       return;
     }
-    $('.roomSelect').append('<div id=' + roomName + ' class="room">'+roomName+'</div>');
     $('#roomSelect').append('<option value=' + roomName + '>'+roomName+'</option>'); //
   };
   //<option value="volvo">Volvo</option>
