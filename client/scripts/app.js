@@ -77,17 +77,38 @@
   };
 
   app.addMessage = function(messageObj) {
+    var escapedRoom;
     if (messageObj.username && (messageObj.text || messageObj.message)) {
         var userText = messageObj.text || messageObj.message;
         var message = escapeHtml(messageObj.username) + ": " + escapeHtml(userText);
-        $('#chats').append('<p>' + message + '</p>');
+        if (messageObj.roomname !==undefined) {
+          escapedRoom=escapeHtml(messageObj.roomname);
+          app.addRoom(escapedRoom);
+          var idName = "#"+escapedRoom
+          $(idName).append('<p>' + message + '</p>');
+        } else {
+          $('#chats').append('<p>' + message + '</p>');
+        }
         // console.log("Are we there?");
       }
   };
 
   app.addRoom = function(roomName) {
-    $('#roomSelect').append('<div id=' + roomName + '></div>');
+    console.log("fir",$('#roomSelect').length);
+    if ($('div.roomSelect').length === 0) {
+      console.log("syntax for existance")
+      $('#chats').append('<div class="roomSelect"></div>');
+    }
+   // console.log("sec", $('#roomSelect').children().length);
+    var idName = "#"+roomName;
+    if ($(idName).length>0) {  //the room is already in Selectroom
+      console.log("check loop")
+      return;
+    }
+    $('.roomSelect').append('<div id=' + roomName + ' class="room">'+roomName+'</div>');
+    $('#roomSelect').append('<option value=' + roomName + '>'+roomName+'</option>'); //
   };
+  //<option value="volvo">Volvo</option>
 
   app.fetch();
 
