@@ -16,11 +16,21 @@
   <body>
     <div id="main">
       <h1>chatterbox</h1>
-      <div class="sendmessage">
+
+      <form class="sendmessage">
+        Message:<br>
+        <input type="text" name="message">
+        <br>
+        Room:<br>
+        <input type="text" name="room">
+        <input type="submit" value="Submit">
+      </form>
+
+<!--       <div class="sendmessage">
         <input type="text"></input>
-        <input type = "text" id = "room"></input>
+        <input type="text" id="room"></input>
         <button type="submit" class="sendMessageButton">Submit</button>
-      </div>
+      </div> -->
       <button class="getMessageButton">get messages</button>
       <select id="roomSelect"></select>
       <div id="chats">
