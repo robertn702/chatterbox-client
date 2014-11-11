@@ -1,11 +1,13 @@
 // YOUR CODE HERE:
-// $(document).ready(function() {
+$(document).ready(function() {
   var app = {};
   app.server = 'https://api.parse.com/1/classes/chatterbox';
 
-  app.init = function () {
 
+  app.init = function () {
+   // name = prompt("What is your name and last name?");
   };
+
 
   app.send = function (message) {
     console.log("started sending");
@@ -76,14 +78,14 @@
     var escapedRoom;
     if (messageObj.username && (messageObj.text || messageObj.message)) {
         var userText = messageObj.text || messageObj.message;
-        var user = '<a href=#>'+ escapeHtml(messageObj.username) + '</a>';
+        var user = '<a class = "user" href=#>'+ escapeHtml(messageObj.username) + '</a>';
         var message =  escapeHtml(userText);
         if (messageObj.roomname !== undefined) {
           escapedRoom=escapeHtml(messageObj.roomname);
           app.addRoom(escapedRoom);
-          $('#chats').prepend('<p class=' + escapedRoom +'>'+user+': ' + message + '</p>');
+          $('#chats').prepend('<p class="' + escapeHtml(messageObj.username) + ' ' + escapedRoom + '">' + user + ': ' + message + '</p>');
         } else {
-          $('#chats').prepend('<p class=' + escapedRoom +'>'+user+': '+message + '</p>');
+          $('#chats').prepend('<p class="' + escapeHtml(messageObj.username) + ' ' + escapedRoom + '">' + user + ': ' + message + '</p>');
         }
         // console.log("Are we there?");
       }
@@ -97,7 +99,8 @@
   };
   //<option value="volvo">Volvo</option>
 
-  $(document).ready(function(){
+ // $(document).ready(function(){
+
    app.fetch();
 
    $(".getMessageButton").click(function(){
@@ -106,9 +109,9 @@
 
      $(".sendMessageButton").click(function(){
       var message = {
-        username: "defaultname",
+        username: window.location.search.slice(10),
         text: $('input').val(),
-        roomname: "defaultroom"
+        roomname: $("select").val()
       };
       console.log("mess", message);
     app.send(message);
@@ -118,6 +121,14 @@
     $('select').change(function(){
       filterRooms($("select").val());
     });
+
+   $("#chats").on("click",".user",function(){
+    var name = $(this).text();
+    $('#chats .'+ name).each(function() {
+      $(this).toggleClass("friend");
+    });
+ //    $(this).parent().addClass("friend");
+   });
 
     var filterRooms = function(roomName) {
       $('#chats').children().each(function() {
